@@ -1,0 +1,55 @@
+version: "3"
+
+services:
+  # Redis
+  redis:
+    image: redis:latest
+    hostname: redis
+  
+  # RabbitMQ
+  rabbit:
+    image: rabbitmq:3-management
+    hostname: rabbit
+    environment:
+      - RABBITMQ_DEFAULT_USER=admin
+      - RABBITMQ_DEFAULT_PASS=mypass
+    ports:
+      - 5672:5672
+      - 15672:15672
+  
+  # Celery
+  worker:
+    image: scrapper_worker
+    build:
+      context: ./worker
+      dockerfile: Dockerfile
+    command: sh ./run_celery.sh
+    volumes:
+      - ./data:/app/data
+      - ./logs:/app/logs
+    environment:
+      - RABBITMQ_USER=admin
+      - RABBITMQ_PASS=mypass
+    links:
+      - redis
+      - rabbit
+    depends_on:
+      - redis
+      - rabbit
+  
+  # FastAPI
+  api:
+    image: scrapper_api
+    build:
+      context: ./api
+      dockerfile: Dockerfile
+    command: sh ./run_api.sh
+    ports:
+      - 5000:5000
+    links:
+      - redis
+      - rabbit
+    depends_on:
+      - redis
+      - rabbit
+      - scrapper_worker
