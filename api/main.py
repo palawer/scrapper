@@ -2,22 +2,21 @@ from typing import Union
 from fastapi import FastAPI, Request
 from config import celery_app
 
+
 app = FastAPI()
 
 
 @app.get("/")
-def read_root():
+def home():
     return {"status": "OK"}
 
 
-@app.get("/items/{item_id}")
-def read_item(item_id: int, q: Union[str, None] = None):
-    return {"item_id": item_id, "q": q}
-
-
-@app.get("/test_task")
-def read_test_task():
-    for i in range(1000):
+"""
+curl -XGET "http://localhost:5000/test_task/1"
+"""
+@app.get("/test_task/{num_tasks}")
+def test_task(num_tasks: int):
+    for i in range(num_tasks):
         celery_app.send_task('test_task', (i,))
     
     return {"test": "task"}

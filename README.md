@@ -12,6 +12,7 @@ A simple example with FastAPI, Celery, Rabbitmq and Redis
 ### API documentation
 
 http://localhost:5000/docs    
+http://localhost:5000/redoc    
 
 ### RabbitMQ management
 
