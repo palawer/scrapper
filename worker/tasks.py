@@ -1,24 +1,11 @@
 from celery.utils.log import get_task_logger
-from config import celery_app, DATA_PATH
+from config import celery_app
+from utils import save_json
 import requests
 import uuid
-import json
-import os
 
 
 logger = get_task_logger(__name__)
-
-
-def save_json(data, filename):
-    if not os.path.exists(DATA_PATH):
-        os.mkdir(DATA_PATH)
-    
-    filepath = os.path.join(DATA_PATH, filename)
-    
-    try:
-        json.dump(data, open(filepath, 'w'))
-    except Exception as e:
-        raise e
 
 
 @celery_app.task(name='test_task')
