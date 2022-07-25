@@ -9,6 +9,19 @@ A simple example with FastAPI, Celery, Rabbitmq and Redis
 ./build.sh
 ```
 
+## Scrapping example
+
+```
+curl -XPOST "http://localhost:5000/get_urls" -H "accept: application/json" -H "Content-Type: application/json" -d'
+{
+    "urls": [
+        "https://jsonplaceholder.typicode.com/comments",
+        "https://jsonplaceholder.typicode.com/todos"
+    ]
+}
+'
+```
+
 ### API documentation
 
 http://localhost:5000/docs    
