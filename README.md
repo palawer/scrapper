@@ -11,6 +11,14 @@ A simple example with FastAPI, Celery, Rabbitmq and Redis
 
 ## Scrapping example
 
+Test task
+
+```
+curl -XGET "http://localhost:5000/test_task/1"
+```
+
+Test scrapping json endpoints (20 times)
+
 ```
 curl -XPOST "http://localhost:5000/get_urls" -H "accept: application/json" -H "Content-Type: application/json" -d'
 {
